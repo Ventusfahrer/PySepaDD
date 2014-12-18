@@ -330,16 +330,17 @@ class PySepaDD(object):
         batch total.
         '''
         batch_key = payment['type'] + "::" + payment['collection_date']
-        if batch_key in self._batches.keys():
-            self._batches[batch_key].append(TX['DrctDbtTxInfNode'])
-        else:
+
+        if not batch_key in self._batches.keys():
             self._batches[batch_key] = []
-            self._batches[batch_key].append(TX['DrctDbtTxInfNode'])
+            self._batch_totals[batch_key] = 0
+
+        self._batches[batch_key].append(TX['DrctDbtTxInfNode'])
 
         if batch_key in self._batch_totals:
             self._batch_totals[batch_key] += payment['amount']
-        else:
-            self._batch_totals[batch_key] = payment['amount']
+
+
 
     def _finalize_batch(self):
         '''
