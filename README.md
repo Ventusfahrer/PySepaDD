@@ -9,14 +9,13 @@ When intializing PySepaDD you MUST supply a config dictionary, the dictionary re
 * (String)  `name`       : The name of the creditor.
 * (String)  `IBAN`       : The International Bank Account Number of the creditor.
 * (String)  `BIC`        : The Bank Identifier Code of the creditor. 
-* (Boolean) `batch`      : Whether to process in batch or non-batch mode. (Likely `True`). 
 * (String)  `creditor_id`: The creditor identification. (Supplied by your bank).
 * (String)  `currency`   : The creditors currency. (ISO 4217)
 
 ####Errors
 The initialization will throw an `Exception` when the config does not validate. The Exception contains a concatenated string (prepended by `Config file did not validate. ` with the (capitalized) items that are missing. For example:
 
-`Config file did not validate. NAME_MISSING BATCH_MISSING`
+`Config file did not validate. NAME_MISSING`
 
 
 ####Example
@@ -24,7 +23,6 @@ The initialization will throw an `Exception` when the config does not validate. 
 config = {"name": "Test von Testenstein",
           "IBAN": "NL50BANK1234567890",
           "BIC": "BANKNL2A",
-          "batch": True,
           "creditor_id": "000000",
           "currency": "EUR"
           }

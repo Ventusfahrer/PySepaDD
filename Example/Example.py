@@ -4,7 +4,6 @@ import datetime
 config = {"name": "TestCreditor",
           "IBAN": "NL50BANK1234567890",
           "BIC": "BANKNL2A",
-          "batch": True,
           "creditor_id": "000000",
           "currency": "EUR"
           }
