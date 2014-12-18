@@ -30,6 +30,7 @@ Copyright (c) 2014 Congressus, The Netherlands
 '''
 
 import xml.etree.cElementTree as ET
+import pprint
 import random
 import sys
 import hashlib
@@ -84,8 +85,7 @@ class PySepaDD(object):
         '''
         Check the config file for required fields and validity.
         @param payment: The payment dict
-        @return: True if valid, error string if invalid paramaters where
-        encountered.
+        @raise exception: if payment is invalid
         '''
 
         validation = ""
@@ -105,21 +105,17 @@ class PySepaDD(object):
         else:
             payment['collection_date'] = payment['collection_date'].strftime('%Y-%m-%d')
 
-        if validation == "":
-            return True
-        else:
-            return validation
+        if validation:
+            raise Exception('Payment did not validate: ' + validation + '\n' + 'payment content was:\n' + pprint.pformat(payment))
+
 
     def add_payment(self, payment):
         '''
         Function to add payments
         @param payment: The payment dict
-        @raise exception: when payment is invalid
+        @raise: exception if the payment is invalid
         '''
-        # Validate the payment
-        validation = self.check_payment(payment)
-        if not validation == True:
-            raise Exception('Payment did not validate: ' + validation)
+        self.check_payment(payment)
 
         # Get the CstmrDrctDbtInitnNode
         if not self._config['batch']:
