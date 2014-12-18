@@ -89,20 +89,27 @@ class PySepaDD(object):
         '''
 
         validation = ""
+        required= ['IBAN', 'BIC', 'amount', 'type', 'collection_date', 'mandate_id', 'mandate_date', 'description']
 
-        if not isinstance(payment['amount'], int):
+        for payment_item in required:
+            if not payment_item in payment:
+                validation += payment_item.upper() + "_MISSING "
+
+        if 'amount' in payment and not isinstance(payment['amount'], int):
             validation += "AMOUNT_NOT_INTEGER "
 
-        if not isinstance(payment['mandate_date'], datetime.date):
+        if 'mandate_date' in  payment and not isinstance(payment['mandate_date'], datetime.date):
             validation += "MANDATE_DATE_INVALID_OR_NOT_DATETIME_INSTANCE"
         payment['mandate_date'] = str(payment['mandate_date'])
 
-        if not isinstance(payment['collection_date'], datetime.date):
+        if 'collection_date' in payment and not isinstance(payment['collection_date'], datetime.date):
             validation += "COLLECTION_DATE_INVALID_OR_NOT_DATETIME_INSTANCE"
         payment['collection_date'] = str(payment['collection_date'])
 
+
         if validation:
             raise Exception('Payment did not validate: ' + validation + '\n' + 'payment content was:\n' + pprint.pformat(payment))
+
 
 
     def add_payment(self, payment):
