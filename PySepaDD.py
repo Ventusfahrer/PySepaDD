@@ -95,8 +95,11 @@ class PySepaDD(object):
             if not payment_item in payment:
                 validation += payment_item.upper() + "_MISSING "
 
-        if 'amount' in payment and not isinstance(payment['amount'], int):
-            validation += "AMOUNT_NOT_INTEGER "
+        if 'amount' in payment:
+            if not isinstance(payment['amount'], int):
+                validation += 'AMOUNT_NOT_INTEGER'
+            elif payment['amount'] < 0:
+                validation += 'AMOUNT_NEGATIVE'
 
         if 'mandate_date' in  payment and not isinstance(payment['mandate_date'], datetime.date):
             validation += "MANDATE_DATE_INVALID_OR_NOT_DATETIME_INSTANCE"
