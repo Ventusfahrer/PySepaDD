@@ -113,20 +113,14 @@ class PySepaDD(object):
         '''
         self.check_payment(payment)
 
-        if 'BIC' in payment:
-            bic = True
-        else:
-            bic = False
-
-        TX_nodes = self._create_TX_node(bic)
+        TX_nodes = self._create_TX_node()
         TX_nodes['InstdAmtNode'].set("Ccy", self._config['currency'])
         TX_nodes['InstdAmtNode'].text = self.int_to_decimal_str(
                                         payment['amount'])
 
         TX_nodes['MndtIdNode'].text = payment['mandate_id']
         TX_nodes['DtOfSgntrNode'].text = payment['mandate_date']
-        if bic:
-            TX_nodes['BIC_DbtrAgt_Node'].text = payment['BIC']
+        TX_nodes['BIC_DbtrAgt_Node'].text = payment['BIC']
 
         TX_nodes['Nm_Dbtr_Node'].text = escape(payment['name'])
         TX_nodes['IBAN_DbtrAcct_Node'].text = payment['IBAN']
@@ -245,8 +239,7 @@ class PySepaDD(object):
         ED['IBAN_CdtrAcct_Node'] = ET.Element("IBAN")
         ED['CdtrAgtNode'] = ET.Element("CdtrAgt")
         ED['FinInstnId_CdtrAgt_Node'] = ET.Element("FinInstnId")
-        if 'BIC' in self._config:
-            ED['BIC_CdtrAgt_Node'] = ET.Element("BIC")
+        ED['BIC_CdtrAgt_Node'] = ET.Element("BIC")
         ED['ChrgBrNode'] = ET.Element("ChrgBr")
         ED['CdtrSchmeIdNode'] = ET.Element("CdtrSchmeId")
         ED['Nm_CdtrSchmeId_Node'] = ET.Element("Nm")
@@ -258,10 +251,9 @@ class PySepaDD(object):
         ED['PrtryNode'] = ET.Element("Prtry")
         return ED
 
-    def _create_TX_node(self, bic=True):
+    def _create_TX_node(self):
         '''
-        Method to create the blank transaction nodes as a dict. If bic is True,
-        the BIC node will also be created.
+        Method to create the blank transaction nodes as a dict.
         '''
         ED = dict()
         ED['DrctDbtTxInfNode'] = ET.Element("DrctDbtTxInf")
@@ -274,8 +266,7 @@ class PySepaDD(object):
         ED['DtOfSgntrNode'] = ET.Element("DtOfSgntr")
         ED['DbtrAgtNode'] = ET.Element("DbtrAgt")
         ED['FinInstnId_DbtrAgt_Node'] = ET.Element("FinInstnId")
-        if bic:
-            ED['BIC_DbtrAgt_Node'] = ET.Element("BIC")
+        ED['BIC_DbtrAgt_Node'] = ET.Element("BIC")
         ED['DbtrNode'] = ET.Element("Dbtr")
         ED['Nm_Dbtr_Node'] = ET.Element("Nm")
         ED['DbtrAcctNode'] = ET.Element("DbtrAcct")
@@ -301,9 +292,8 @@ class PySepaDD(object):
         TX_nodes['DrctDbtTxNode'].append(TX_nodes['MndtRltdInfNode'])
         TX_nodes['DrctDbtTxInfNode'].append(TX_nodes['DrctDbtTxNode'])
 
-        if TX_nodes['BIC_DbtrAgt_Node'].text is not None:
-            TX_nodes['FinInstnId_DbtrAgt_Node'].append(
-                                                TX_nodes['BIC_DbtrAgt_Node'])
+        TX_nodes['FinInstnId_DbtrAgt_Node'].append(
+                                            TX_nodes['BIC_DbtrAgt_Node'])
         TX_nodes['DbtrAgtNode'].append(TX_nodes['FinInstnId_DbtrAgt_Node'])
         TX_nodes['DrctDbtTxInfNode'].append(TX_nodes['DbtrAgtNode'])
 
@@ -358,8 +348,7 @@ class PySepaDD(object):
             PmtInf_nodes['Nm_Cdtr_Node'].text = escape(self._config['name'])
             PmtInf_nodes['IBAN_CdtrAcct_Node'].text = self._config['IBAN']
 
-            if 'BIC' in self._config:
-                PmtInf_nodes['BIC_CdtrAgt_Node'].text = self._config['BIC']
+            PmtInf_nodes['BIC_CdtrAgt_Node'].text = self._config['BIC']
 
             PmtInf_nodes['ChrgBrNode'].text = "SLEV"
             PmtInf_nodes['Nm_CdtrSchmeId_Node'].text = escape(
@@ -395,9 +384,8 @@ class PySepaDD(object):
                                          PmtInf_nodes['Id_CdtrAcct_Node'])
             PmtInf_nodes['PmtInfNode'].append(PmtInf_nodes['CdtrAcctNode'])
 
-            if 'BIC' in self._config:
-                PmtInf_nodes['FinInstnId_CdtrAgt_Node'].append(
-                                            PmtInf_nodes['BIC_CdtrAgt_Node'])
+            PmtInf_nodes['FinInstnId_CdtrAgt_Node'].append(
+                                        PmtInf_nodes['BIC_CdtrAgt_Node'])
             PmtInf_nodes['CdtrAgtNode'].append(
                                        PmtInf_nodes['FinInstnId_CdtrAgt_Node'])
             PmtInf_nodes['PmtInfNode'].append(PmtInf_nodes['CdtrAgtNode'])
