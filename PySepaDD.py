@@ -49,7 +49,7 @@ class PySepaDD(object):
         Constructor. Checks the config, prepares the document and
         builds the header.
         @param param: The config dict.
-        @raise exception: When the config file is invalid.
+        @raise exception: When the config dict is invalid.
         '''
         self._config = None             # Will contain the config file.
         self._xml = None                # Will contain the final XML file.
