@@ -48,7 +48,7 @@ class PySepaDD(object):
         Constructor. Checks the config, prepares the document and
         builds the header.
         @param param: The config dict.
-        @raise exception: When the config file is invalid.
+        @raise exception: When the config dict is invalid.
         '''
         self._config = None             # Will contain the config file.
         self._xml = None                # Will contain the final XML file.
@@ -57,10 +57,7 @@ class PySepaDD(object):
                                         # debit per batch for checksum total.
 
         config_result = self.check_config(config)
-        if config_result:
-            self._config = config
-        else:
-            raise Exception("Config file did not validate. " + config_result)
+        self._config = config
 
         self._prepare_document()
         self._create_header()
@@ -68,9 +65,9 @@ class PySepaDD(object):
     def check_config(self, config):
         '''
         Check the config file for required fields and validity.
+
         @param config: The config dict.
-        @return: True if valid, error string if invalid paramaters where
-        encountered.
+        @raise exception: if the config dict is invalid
         '''
         validation = ""
         required = ["name", "IBAN", "BIC", "batch", "creditor_id", "currency"]
@@ -79,10 +76,9 @@ class PySepaDD(object):
             if not config_item in config:
                 validation += config_item.upper() + "_MISSING "
 
-        if not validation:
-            return True
-        else:
-            return validation
+        if validation:
+            raise Exception("Config file did not validate. " + validation)
+
 
     def check_payment(self, payment):
         '''
