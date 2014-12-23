@@ -99,7 +99,9 @@ class PySepaDD(object):
 
         if not isinstance(payment['mandate_date'], datetime.date):
             validation += "MANDATE_DATE_INVALID_OR_NOT_DATETIME_INSTANCE"
-        payment['mandate_date'] = str(payment['mandate_date'])
+            payment['mandate_date'] = str(payment['mandate_date'])
+        else:
+            payment['mandate_date'] = payment['mandate_date'].strftime('%Y-%m-%d')
 
         if not isinstance(payment['collection_date'], datetime.date):
             validation += "COLLECTION_DATE_INVALID_OR_NOT_DATETIME_INSTANCE"
