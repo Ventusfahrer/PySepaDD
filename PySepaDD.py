@@ -256,7 +256,6 @@ class PySepaDD(object):
         ED['BIC_CdtrAgt_Node'] = ET.Element("BIC")
         ED['ChrgBrNode'] = ET.Element("ChrgBr")
         ED['CdtrSchmeIdNode'] = ET.Element("CdtrSchmeId")
-        ED['Nm_CdtrSchmeId_Node'] = ET.Element("Nm")
         ED['Id_CdtrSchmeId_Node'] = ET.Element("Id")
         ED['PrvtIdNode'] = ET.Element("PrvtId")
         ED['OthrNode'] = ET.Element("Othr")
@@ -366,8 +365,6 @@ class PySepaDD(object):
             PmtInf_nodes['BIC_CdtrAgt_Node'].text = self._config['BIC']
 
             PmtInf_nodes['ChrgBrNode'].text = "SLEV"
-            PmtInf_nodes['Nm_CdtrSchmeId_Node'].text = escape(
-                                                       self._config['name'])
             PmtInf_nodes['Id_Othr_Node'].text = self._config['creditor_id']
             PmtInf_nodes['PrtryNode'].text = "SEPA"
 
@@ -407,8 +404,6 @@ class PySepaDD(object):
 
             PmtInf_nodes['PmtInfNode'].append(PmtInf_nodes['ChrgBrNode'])
 
-            PmtInf_nodes['CdtrSchmeIdNode'].append(
-                                           PmtInf_nodes['Nm_CdtrSchmeId_Node'])
             PmtInf_nodes['OthrNode'].append(PmtInf_nodes['Id_Othr_Node'])
             PmtInf_nodes['SchmeNmNode'].append(PmtInf_nodes['PrtryNode'])
             PmtInf_nodes['OthrNode'].append(PmtInf_nodes['SchmeNmNode'])
