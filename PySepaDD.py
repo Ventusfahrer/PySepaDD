@@ -452,7 +452,7 @@ class PySepaDD(object):
         '''
         random = self._get_rand_string(12)
         name = self._config['name']
-        if len(name) <= 22:
+        if len(name) > 22:
             name = name[:22]
         return name + "-" + random
 
