@@ -184,11 +184,11 @@ class PySepaDD(object):
         '''
         self._xml = ET.Element("Document")
         self._xml.set("xmlns",
-                      "urn:iso:std:iso:20022:tech:xsd:pain.008.001.02")
+                      "urn:iso:std:iso:20022:tech:xsd:pain.008.003.02")
         self._xml.set("xmlns:xsi",
                       "http://www.w3.org/2001/XMLSchema-intance")
         ET.register_namespace("",
-                              "urn:iso:std:iso:20022:tech:xsd:pain.008.001.02")
+                              "urn:iso:std:iso:20022:tech:xsd:pain.008.003.02")
         ET.register_namespace("xsi",
                               "http://www.w3.org/2001/XMLSchema-intance")
         CstmrDrctDbtInitn_node = ET.Element("CstmrDrctDbtInitn")
