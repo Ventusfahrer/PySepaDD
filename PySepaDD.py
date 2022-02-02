@@ -175,8 +175,8 @@ class PySepaDD(object):
 
         #Prepending the XML version is hacky, but cElementTree only offers this
         #automatically if you write to a file, which we don't necessarily want.
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + ET.tostring(
-               self._xml, "utf-8")
+        return '<?xml version="1.0" encoding="UTF-8"?>'+ ET.tostring(
+                self._xml).decode()
 
     def _prepare_document(self):
         '''
@@ -427,11 +427,14 @@ class PySepaDD(object):
         @return: a random hex string of length size, will never return more
         than 40 chars.
         '''
-        random_number = random.randint(0, sys.maxint)   # Weak random, but it
-                                                        # is not used for any
-                                                        # crypto
-        random_string = hashlib.sha1(str(random_number)).hexdigest()
-        return random_string[:size]
+        # random_number = random.randint(0, sys.maxsize)   # Weak random, but it
+        #                                                  # is not used for any
+        # teststr = str(random_number.to_bytes(),"utf-8")  
+        # #random_string = hashlib.sha1(str(random_number,encoding="utf-8")).hexdigest()
+        # random_string = hashlib.sha1(teststr).hexdigest()
+        hexdigits = "0123456789abcdef"
+        random_digits = "".join([ hexdigits[random.randint(0,0xF)] for _ in range(size) ])
+        return random_digits
 
     def _make_msg_id(self):
         '''
